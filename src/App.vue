@@ -31,7 +31,7 @@
         </v-list-tile>
       </v-list>
       <v-list>
-        <v-list-tile avatar v-for="user in onlineUsers[1]" :key="user.user.email" @click="">
+        <v-list-tile avatar v-for="user in onlineUsers[1]" @click="">
           <v-list-tile-avatar>
             <img :src="user.user.photoUrl"/>
           </v-list-tile-avatar>
@@ -46,7 +46,7 @@
         @click.stop="sideNav = !sideNav"
         class=" "></v-toolbar-side-icon>
       <v-toolbar-title>
-        <router-link to="/" tag="span" style="cursor: pointer">Food Sharing</router-link>
+        <router-link to="/" tag="span" style="cursor: pointer">ChuHe</router-link>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items class="hidden-xs-only">
@@ -90,7 +90,8 @@
         ]
         if (this.userIsAuthenticated) {
           menuItems = [
-            {icon: 'chat', title: 'Create a Chat', link: '/createChat'},
+            {icon: 'home', title: 'Home', link: '/'},
+            {icon: 'chat', title: 'Chat', link: '/chat'},
             {icon: 'person', title: 'Profile', link: '/profile'}
           ]
         }

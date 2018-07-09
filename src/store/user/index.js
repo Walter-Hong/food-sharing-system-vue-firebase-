@@ -1,4 +1,4 @@
-import * as firebase from 'firebase'
+import {db, firebase} from '../../firebase/index'
 
 export default {
   state: {
@@ -8,9 +8,9 @@ export default {
   mutations: {
     setUser(state, payload) {
       state.user = payload
-      const userListRef = firebase.database().ref('presence')
+      const userListRef = db.child('presence')
       const myUserRef = userListRef.push()
-      firebase.database().ref('.info/connected')
+      db.child('.info/connected')
         .on(
           'value', function (snap) {
             if (snap.val()) {
@@ -39,25 +39,26 @@ export default {
       firebase.auth().createUserWithEmailAndPassword(payload.email, payload.password)
         .then(
           user => {
-            firebase.database().ref('users').child(user.uid).set({
-              name: payload.username
+            db.child('users').child(user.uid).set({
+              name: payload.username,
+              photoUrl: "https://cn.vuejs.org/images/logo.png"
             })
               .then(
                 message => {
-            commit('setLoading', false)
-            const newUser = {
-              id: user.uid,
-              name: payload.username,
-              email: user.email,
-              photoUrl: user.photoURL
-            }
-            commit('setUser', newUser)
-          }
-        )
-        .catch(
-          error => {
-            commit('setLoading', false)
-            commit('setError', error)
+                  commit('setLoading', false)
+                  const newUser = {
+                    id: user.uid,
+                    name: payload.username,
+                    email: user.email,
+                    photoUrl: "https://cn.vuejs.org/images/logo.png"
+                  }
+                  commit('setUser', newUser)
+                }
+              )
+              .catch(
+                error => {
+                  commit('setLoading', false)
+                  commit('setError', error)
                 }
               )
           }
@@ -203,7 +204,7 @@ export default {
       commit('setUser', null)
     },
     loadOnlineUsers({commit}) {
-      firebase.database().ref('presence').on('value', function (snapshot) {
+      db.child('presence').on('value', function (snapshot) {
         let result = []
         result[0] = snapshot.numChildren()
         result[1] = snapshot.val()

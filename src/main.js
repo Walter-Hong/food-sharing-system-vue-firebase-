@@ -2,15 +2,34 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import Vuetify from 'vuetify'
-const App = () => import('./App')
 import VueResource from 'vue-resource'
-import * as firebase from 'firebase'
+import {firebase} from './firebase/index'
+import VueFire from 'vuefire'
 import router from './router'
-import { store } from './store'
+import {store} from './store'
+import Input from 'buefy/src/components/input'
+import Field from 'buefy/src/components/field'
+import Tooltip from 'buefy/src/components/tooltip'
+import 'buefy/lib/buefy.css'
+import * as VueGoogleMaps from 'vue2-google-maps'
+import VueScrollTo from 'vue-scrollto'
+import VuePaginate from 'vue-paginate'
+const App = () => import('./App')
 const AlertCmp = () => import('./components/Shared/Alert.vue')
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyDvG8QBgXV6msnzH-AtgN-ssWYJBHY5kH4'
+  }
+})
 
+Vue.use(VueFire)
 Vue.use(Vuetify)
 Vue.use(VueResource)
+Vue.component(Input.name, Input)
+Vue.component(Field.name, Field)
+Vue.component(Tooltip.name, Tooltip)
+Vue.use(VueScrollTo)
+Vue.use(VuePaginate)
 Vue.config.productionTip = false
 
 Vue.component('app-alert', AlertCmp)
@@ -20,16 +39,8 @@ new Vue({
   router,
   store,
   template: '<App/>',
-  components: { App },
-  created () {
-    firebase.initializeApp({
-      apiKey: 'AIzaSyCXJy2P5ziBmSqZMrOQBOZjBZBqOClkm68',
-      authDomain: 'my-project-1525706860738.firebaseapp.com',
-      databaseURL: 'https://my-project-1525706860738.firebaseio.com',
-      projectId: 'my-project-1525706860738',
-      storageBucket: 'my-project-1525706860738.appspot.com',
-      messagingSenderId: '132702724130'
-    })
+  components: {App},
+  created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.$store.dispatch('autoSignIn', user)

@@ -4,6 +4,7 @@ import AuthGuard from './auth-guard'
 
 
 const Home = () => import('@/components/Home')
+const Post = () => import('@/components/Post')
 const Profile = () => import('@/components/User/Profile')
 const Signup = () => import('@/components/User/Signup')
 const Signin = () => import('@/components/User/Signin')
@@ -21,6 +22,11 @@ export default new Router({
     //   component: Home
     // },
     {
+      path: '/',
+      name: 'Post',
+      component: Post
+    },
+    {
       path: '/signup',
       name: 'Signup',
       component: Signup
@@ -37,7 +43,7 @@ export default new Router({
       beforeEnter: AuthGuard
     },
     {
-      path: '/',
+      path: '/chat',
       name: 'ChatHome',
       component: ChatHome,
       beforeEnter: AuthGuard
